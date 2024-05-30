@@ -46,6 +46,10 @@ app.get('/', (req, res) => {
 const authRoutes = require('./routes/auth.routes');
 app.use('/api/auth', authRoutes);
 
+// Import and use article routes
+const articleRoutes = require('./routes/article.routes');
+app.use('/api', articleRoutes);
+
 async function initial() {
   try {
     const count = await Role.estimatedDocumentCount();
