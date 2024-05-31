@@ -9,7 +9,6 @@ exports.getAllArticles = async (req, res) => {
     }
 };
 
-
 exports.createArticle = async (req, res) => {
     const { name, price, size, imageUrl } = req.body;
     try {
@@ -21,29 +20,42 @@ exports.createArticle = async (req, res) => {
     }
 };
 
+exports.getArticleById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const article = await Article.findById(id);
+        if (!article) {
+            return res.status(404).json({ message: 'Article not found' });
+        }
+        res.json(article);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 exports.updateArticle = async (req, res) => {
     const { id } = req.params;
     const { name, price, size, imageUrl } = req.body;
     try {
-      const updatedArticle = await Article.findByIdAndUpdate(id, { name, price, size, imageUrl }, { new: true });
-      if (!updatedArticle) {
-        return res.status(404).json({ message: 'Article not found' });
-      }
-      res.json(updatedArticle);
+        const updatedArticle = await Article.findByIdAndUpdate(id, { name, price, size, imageUrl }, { new: true });
+        if (!updatedArticle) {
+            return res.status(404).json({ message: 'Article not found' });
+        }
+        res.json(updatedArticle);
     } catch (error) {
-      res.status(400).json({ message: error.message });
+        res.status(400).json({ message: error.message });
     }
 };
 
 exports.deleteArticle = async (req, res) => {
     const { id } = req.params;
     try {
-      const deletedArticle = await Article.findByIdAndDelete(id);
-      if (!deletedArticle) {
-        return res.status(404).json({ message: 'Article not found' });
-      }
-      res.json({ message: 'Article deleted successfully' });
+        const deletedArticle = await Article.findByIdAndDelete(id);
+        if (!deletedArticle) {
+            return res.status(404).json({ message: 'Article not found' });
+        }
+        res.json({ message: 'Article deleted successfully' });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
-  };
+};
